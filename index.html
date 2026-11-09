@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TypeMaster 90 - Coder's 15 Day Typing Bootcamp</title>
+<meta name="theme-color" content="#0b1020">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--bg:#0b1020;--panel:#131a2e;--panel2:#1a2340;--line:#27325a;--tx:#e6ebff;--mut:#8c97c4;--acc:#6ee7b7;--acc2:#60a5fa;--bad:#f87171;--warn:#fbbf24}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh}
+h2{font-size:22px;margin:2px 0}
+.mut{color:var(--mut)}
+.top{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--line);background:var(--panel);position:sticky;top:0;z-index:5;flex-wrap:wrap;gap:8px}
+.logo{font-weight:800;font-size:19px}.logo b{color:var(--acc)}
+nav{display:flex;gap:6px;flex-wrap:wrap}
+nav button{background:none;border:1px solid transparent;color:var(--mut);padding:7px 14px;border-radius:9px;cursor:pointer;font:inherit}
+nav button.on,nav button:hover{background:var(--panel2);color:var(--tx);border-color:var(--line)}
+main{max-width:1080px;margin:0 auto;padding:20px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}
+.grid{display:grid;gap:14px}.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}.g3{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}.g4{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
+.row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.stat .v{font-size:28px;font-weight:800;line-height:1.1}.stat .l{color:var(--mut);font-size:11px;text-transform:uppercase;letter-spacing:.9px;margin-top:4px}
+.btn{background:var(--panel2);border:1px solid var(--line);color:var(--tx);padding:9px 16px;border-radius:10px;cursor:pointer;font:inherit;font-weight:600}
+.btn:hover{border-color:var(--acc2)}.btn.pri{background:var(--acc);color:#04201a;border-color:var(--acc)}.btn.pri:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.bar{height:9px;background:var(--panel2);border-radius:6px;overflow:hidden}.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--acc2),var(--acc));transition:width .25s}
+.badge{display:inline-block;font-size:11px;padding:2px 9px;border-radius:20px;background:var(--panel2);border:1px solid var(--line);color:var(--mut);margin-right:6px}
+.badge.ok{color:var(--acc);border-color:var(--acc)}.badge.warn{color:var(--warn);border-color:var(--warn)}
+.day{margin:18px 0}.dh{margin-bottom:8px;font-size:16px}
+.chap{cursor:pointer;transition:.15s}.chap:hover{border-color:var(--acc2);transform:translateY(-1px)}.chap.lock{opacity:.45;cursor:not-allowed}.chap.done{border-color:#1f6f55}
+.chap h3{font-size:16px;margin:6px 0 2px}.chap p{font-size:13px;color:var(--mut)}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--panel2);border:1px solid var(--line);margin-right:4px}.dot.on{background:var(--acc);border-color:var(--acc)}
+.typebox{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:23px;line-height:1.75;white-space:pre-wrap;max-height:240px;overflow:auto;padding:18px 22px;background:var(--panel);border:1px solid var(--line);border-radius:14px;position:relative;color:#56628f}
+.ch.ok{color:var(--tx)}.ch.bad{color:#fff;background:#b91c1c;border-radius:3px}.ch.cur{background:rgba(110,231,183,.22);border-bottom:2px solid var(--acc)}.ch.nl{opacity:.5}
+.kb{max-width:780px;margin:18px auto 6px;user-select:none}.kr{display:flex;gap:5px;margin-bottom:5px}
+.key{height:40px;border-radius:7px;background:var(--panel2);border:1px solid var(--line);border-bottom-width:4px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--mut);text-transform:uppercase;min-width:0}
+.key.next{background:var(--acc);color:#04201a;font-weight:800}.key.err{background:var(--bad);color:#fff}
+.f0,.f7{border-bottom-color:#f472b6}.f1,.f6{border-bottom-color:#fb923c}.f2,.f5{border-bottom-color:#facc15}.f3,.f4{border-bottom-color:#4ade80}.f8{border-bottom-color:#94a3b8}
+canvas{width:100%;height:160px;display:block}
+.modal{position:fixed;inset:0;background:rgba(5,8,20,.82);display:flex;align-items:center;justify-content:center;padding:16px;z-index:20}.modal.hidden{display:none}
+.mbox{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;max-width:720px;width:100%;max-height:94vh;overflow:auto}
+.pass{font-size:22px;font-weight:800}.pass.y{color:var(--acc)}.pass.n{color:var(--warn)}
+.chip{display:inline-block;padding:2px 9px;border-radius:7px;background:var(--panel2);border:1px solid var(--line);margin:2px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px}
+.qa{border:1px dashed var(--line);border-radius:10px;padding:9px 12px;margin:6px 0;cursor:pointer;font-size:14px}.qa .a{display:none;color:var(--acc);margin-top:4px}.qa.open .a{display:block}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line)}th{color:var(--mut);font-weight:600;font-size:12px;text-transform:uppercase}
+.warnbox{color:var(--warn);font-weight:700;margin:8px 0;min-height:20px}
+input[type=number]{background:var(--panel2);border:1px solid var(--line);color:var(--tx);padding:8px;border-radius:8px;width:90px;font:inherit}
+.sp{height:10px}
+ul.rt{margin:6px 0 0 20px}ul.rt li{margin:3px 0}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="logo">&#9000; TypeMaster<b>90</b></div>
+  <nav id="nav">
+    <button data-v="home" onclick="go('home')">Home</button>
+    <button data-v="chapters" onclick="go('chapters')">30 Chapters</button>
+    <button data-v="analysis" onclick="go('analysis')">Analysis</button>
+    <button data-v="settings" onclick="go('settings')">Settings</button>
+  </nav>
+</header>
+<main id="app"></main>
+<div id="modal" class="modal hidden"></div>
+
+<script type="text/plain" id="data">
+@@Home Row Basics|Left hand: a s d f, right hand: j k l ; and thumbs on space. Index fingers rest on f and j bumps. Never look down.|d|140|0.8
+asdf jkl; asdf jkl;
+fdsa ;lkj fdsa ;lkj
+aa ss dd ff jj kk ll ;; aa ss dd ff jj kk ll ;;
+ask dad fall sad lad flask
+a sad lad; a fad dad
+all falls; ask a lass
+gh hg gg hh gash hash dash
+had has gas lag glad shall flash
+half hall gall shag haggle
+sag jag lag hag dag gal gas
+ask all fads; jak sad
+@@Home Row Words|Build rhythm: equal gap between every key. Press space with the thumb of the hand that did NOT just type.|d|160|0.8
+dad had a glad lad
+a flash falls; a salad shall
+sad dad; glad lass; half salad
+gash flask shall hall slash
+ah ha; ash flag; lass had gas
+shall all fall; ask a gal
+dad lags; jak falls; lad adds
+a glass; a shag; a dash; a slag
+glad hall; half flag; sad gash
+all dads shall ask; a lass falls
+@@Top Row (q to p)|Reach up from the home row and return. Each finger owns its column. Eyes stay on the screen.|d|180|0.85
+type write power quiet tower pretty puppy
+we were wet pie pipe tip top try
+rope hope poetry outer trophy
+your yours youth truly purely quit
+quote quite equity require recipe
+worry yet tire were pewter
+you try to type out your power report
+pepper proper property prosper
+we put the ruler to the quiet tower
+equip it; require it; repeat it
+@@Bottom Row (z to /)|Fingers curl down. Use the right finger for , . / and keep your wrists floating, not resting.|d|180|0.85
+zoom cabin vexed number zinc box mix
+can man van ban nab bomb mob
+buzz zebra maze zone zoom
+exam excel expand mixer vixen next
+a, b, c, d. x/y/z. m, n. b/c
+fix, mix, six; vex, vim, vow
+cab, van, can, man. bomb, numb
+zinc maxim vibe mambo zoom bazaar
+combine, convey, cancel, civic.
+a/b b/c c/d d/e e/f
+@@Full Alphabet and Common Words|All letters together. Read two or three words ahead of the word you type. This is the secret of 90 WPM.|d|240|0.9
+the quick brown fox jumps over the lazy dog
+pack my box with five dozen liquor jugs
+how vexingly quick daft zebras jump
+function variable return class object string number boolean array
+system process memory kernel thread driver socket buffer cache
+the server is running and the client is waiting for a response
+programmers write code to solve problems every single day
+debugging is twice as hard as writing the code in the first place
+algorithm database network compiler browser terminal package module
+a small change in the code can break the whole program
+@@Shift and Naming Styles|Use the opposite hand's shift. Left hand types a capital that belongs to the right hand, and vice versa. Practice the four coding cases.|d|220|0.85
+camelCase getUserName setItemCount isValidEmail
+PascalCase UserProfile HttpClient DataStore
+snake_case user_name total_count max_value
+SCREAMING_SNAKE MAX_RETRIES API_KEY BASE_URL
+kebab-case main-header nav-item btn-primary
+Hello World JavaScript Python TypeScript
+Linux Windows macOS Android iOS
+HTML CSS SQL JSON XML YAML API CPU RAM ROM
+Alan Turing Linus Torvalds Ada Lovelace Grace Hopper
+fetchUserData handleClickEvent parseJsonResponse renderMainView
+class UserService class OrderRepository class PaymentGateway
+@@Number Row|Keep the fingers on their columns. 4 and 7 belong to index fingers, 3 and 8 to middle, 2 and 9 to ring, 1 and 0 to pinky.|d|220|0.85
+1234567890 0987654321
+192.168.1.1 127.0.0.1 8080 3000 443
+2026 1995 2048 4096 65536
+3.14159 2.71828 1.41421
+0xFF 0b1010 0o777 1e9
+12 + 34 = 46 and 90 - 45 = 45
+100 200 300 400 500 600 700 800 900
+1024 bytes = 1 KB; 1024 KB = 1 MB
+HTTP 200 301 404 500 503
+ports 22 80 443 3306 5432 6379 27017
+7 8 9 4 5 6 1 2 3 0
+@@Brackets and Braces|Brackets are the heart of code. The pinky reaches [ ] and Shift makes { } and ( ) and < >. Always type the closing one without thinking.|c|220|0.8
+() [] {} <> () [] {} <>
+(a) [b] {c} <d>
+((())) [[[]]] {{{}}} <<<>>>
+foo(bar(baz))
+arr[i][j] = matrix[x][y]
+if (x) { return y; }
+{ key: [1, 2, 3], other: (4, 5) }
+<div><p></p></div>
+function () { return [] }
+map[key] = {name: list[0]}
+(a + b) * (c - d)
+for (i = 0; i < n; i++) {}
+<T extends Array<string>>
+{{ user.name }}
+[[1, 2], [3, 4]]
+@@Operators|Math, comparison and logic operators. Practice them until == and === and && flow out of your fingers.|c|230|0.8
++ - * / % = + - * / % =
+a + b - c * d / e % f
+x == y != z
+a === b !== c
+a <= b >= c < d > e
+a && b || !c
+x += 1; y -= 2; z *= 3; w /= 4;
+i++; j--; ++k; --m;
+a ?? b
+a ? b : c
+x << 2 >> 1
+a & b | c ^ d ~ e
+result = (a + b) * c / d % e
+count **= 2
+x => x * 2
+a ||= b
+...args
+=== !== == != <= >= && || ?? ?.
+@@Quotes and Punctuation|Pinky on the quote key. Strings, comments, JSON and template literals all need quotes and commas typed fast.|c|240|0.85
+"hello world" 'single quote' `template`
+console.log("Hello, World!");
+name = 'Alice'; age = "25";
+print("done"); print('ok')
+a, b, c; d: e; f. g!
+{"name": "Ali", "age": 21, "ok": true}
+const msg = `Hi ${name}, you are ${age}`;
+// this is a comment
+# python comment
+/* block comment */
+"it's" 'say "hi"' "x = 'y'"
+key: value, key2: value2;
+what? why! how... okay; fine: done.
+a_b-c.d@e.com
+C:\Users\dev\project
+@@Special Symbols|The hard ones: at, hash, dollar, percent, caret, ampersand, star, underscore, pipe, backslash, tilde. They decide your real coding speed. Go slow, stay accurate.|c|240|0.8
+@ # $ % ^ & * _ | \ ~ ! ? ` @ # $ % ^ & * _ | \ ~ ! ?
+@media @import @Override @property
+#id #include #define #!/bin/bash
+$var $HOME $PATH $(pwd) ${name}
+50% 100% 25% 75% 10%
+a ^ b & c | d ~ e
+*ptr &ref **pp
+__init__ __main__ _private _
+a | b | c; grep | sort | uniq
+\n \t \r \0 \\
+!important !isValid !!value
+user@example.com #hashtag $price 99%
+^[a-z]+$ \d+ \w+ \s*
+~/projects ~/.bashrc
+&& || ; | & >> > <
+?: ?. ?? ??= ?
+@@JavaScript Core|Keywords and everyday statements. Type them as whole units, not letter by letter.|c|260|0.92
+const let var function return if else for while do break continue
+switch case default try catch finally throw new this class extends super
+import export default from async await yield typeof instanceof void delete
+null undefined true false NaN Infinity
+let count = 0;
+const name = 'dev';
+var isReady = false;
+if (count > 10) { count = 0; }
+const total = price * qty + tax;
+while (i < n) { i++; }
+for (let i = 0; i < arr.length; i++) {}
+let x = y ?? 'default';
+const { a, b } = obj;
+const [first, ...rest] = list;
+@@JavaScript Functions and Arrays|Arrow functions, array methods, spread, classes. This is daily bread for a web developer.|c|280|0.92
+function add(a, b) { return a + b; }
+const square = (n) => n * n;
+const double = n => n * 2;
+const nums = [1, 2, 3, 4, 5];
+const evens = nums.filter(n => n % 2 === 0);
+const total = nums.reduce((acc, n) => acc + n, 0);
+const names = users.map(u => u.name).join(', ');
+nums.forEach((n, i) => console.log(i, n));
+const found = list.find(x => x.id === id);
+const copy = [...arr, 6]; const merged = { ...a, ...b };
+const sorted = [...items].sort((a, b) => a - b);
+console.log(`Total: ${total}`);
+export default function App() { return null; }
+const obj = { name: 'Ali', age: 21, greet() { return 'hi'; } };
+Object.keys(obj).forEach(key => console.log(key));
+JSON.stringify(data); JSON.parse(text);
+class Dog extends Animal { constructor(name) { super(name); } }
+@@JavaScript DOM and Async|Browser APIs, events, fetch, promises and async await. Practise the long method chains with calm rhythm.|c|280|0.9
+document.getElementById('app').innerHTML = html;
+const btn = document.querySelector('.btn');
+btn.addEventListener('click', () => alert('clicked'));
+el.classList.add('active'); el.classList.toggle('hidden');
+localStorage.setItem('key', JSON.stringify(data));
+const data = JSON.parse(localStorage.getItem('key'));
+setTimeout(() => console.log('done'), 1000);
+const res = await fetch('/api/users');
+const json = await res.json();
+async function load() { try { const r = await fetch(url); return await r.json(); } catch (e) { console.error(e); } }
+fetch(url).then(r => r.json()).then(d => console.log(d)).catch(err => console.error(err));
+new Promise((resolve, reject) => setTimeout(resolve, 500));
+Promise.all([a(), b(), c()]).then(([x, y, z]) => {});
+event.preventDefault(); event.target.value;
+window.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
+document.createElement('div').textContent = 'Hello';
+@@Python Essentials|Colons, underscores and f-strings. Python has few brackets but many colons and underscores.|c|280|0.92
+def add(a, b): return a + b
+for i in range(10): print(i)
+if x > 0 and y < 5: print('ok')
+numbers = [x ** 2 for x in range(10) if x % 2 == 0]
+with open('file.txt', 'r') as f: data = f.read()
+import os, sys, json
+from collections import defaultdict, Counter
+class Dog(Animal): pass
+square = lambda x: x * 2
+print(f'Hello, {name}! You are {age} years old.')
+my_dict = {'a': 1, 'b': 2}
+while True: break
+if __name__ == '__main__': main()
+def __init__(self, name): self.name = name
+return [i for i in data if i is not None]
+items.sort(key=lambda t: t[1], reverse=True)
+assert len(arr) > 0, 'empty'
+yield from gen()
+@@HTML Tags|Angle brackets, quotes and slashes. Type tags as one fluid motion: open, content, close.|c|280|0.88
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>My Page</title></head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+<body><div id="app" class="container"></div></body>
+<h1>Hello</h1> <p>Paragraph text</p>
+<a href="https://example.com" target="_blank">Link</a>
+<img src="logo.png" alt="Logo">
+<ul><li>One</li><li>Two</li></ul>
+<form action="/login" method="post"><input type="text" name="user"><button type="submit">Go</button></form>
+<input type="email" placeholder="Email" required>
+<nav><a href="#home">Home</a></nav>
+<table><tr><td>1</td></tr></table>
+<button onclick="run()">Run</button>
+<!-- comment -->
+@@CSS Styling|Braces, colons, semicolons, hex colors and units. Learn the rhythm: property, colon, value, semicolon.|c|290|0.88
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: Arial, sans-serif; background: #0f172a; color: #e2e8f0; }
+.container { display: flex; justify-content: center; align-items: center; }
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+#header { position: fixed; top: 0; left: 0; width: 100%; z-index: 10; }
+.btn:hover { background: #3b82f6; transform: scale(1.05); }
+@media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+:root { --primary: #6366f1; } .card { color: var(--primary); }
+.box { transition: all 0.3s ease-in-out; border-radius: 8px; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+a::after { content: ''; } li:nth-child(2n+1) { color: red; }
+.text { font-size: 1.2rem; line-height: 1.6; letter-spacing: -0.5px; }
+.card { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25); }
+overflow: hidden; opacity: 0.5; cursor: pointer;
+@@Git and Terminal|Commands, flags, pipes and paths. A developer who types these fast saves hours every month.|c|290|0.9
+git init && git add . && git commit -m "first commit"
+git status; git log --oneline --graph
+git branch feature-login; git checkout -b dev
+git merge main; git pull origin main; git push -u origin main
+git clone https://github.com/user/repo.git
+git diff HEAD~1; git stash pop; git reset --hard HEAD
+ls -la; cd ~/projects; mkdir -p src/utils
+rm -rf node_modules; cp -r a b; mv old.txt new.txt
+cat file.txt | grep "error" | wc -l
+chmod +x run.sh; sudo apt update && sudo apt install -y nodejs
+ps aux | grep node; kill -9 1234
+tail -f /var/log/syslog
+ssh user@192.168.1.10
+curl -X POST -H "Content-Type: application/json" -d '{"a":1}' http://localhost:3000
+npm install express; npm run dev; pip install -r requirements.txt
+docker run -d -p 8080:80 nginx; docker ps -a
+find . -name "*.js" -type f; df -h; free -m
+@@SQL Queries|Uppercase keywords with Shift, then lowercase names. Commas, parentheses and quotes must stay accurate.|c|300|0.9
+SELECT * FROM users WHERE age >= 18 AND city = 'Pune';
+SELECT name, COUNT(*) AS total FROM orders GROUP BY name HAVING COUNT(*) > 5;
+INSERT INTO users (id, name, email) VALUES (1, 'Ali', 'ali@mail.com');
+UPDATE products SET price = price * 1.1 WHERE id = 42;
+DELETE FROM logs WHERE created_at < '2025-01-01';
+CREATE TABLE posts (id INT PRIMARY KEY AUTO_INCREMENT, title VARCHAR(255) NOT NULL);
+SELECT u.name, o.total FROM users u INNER JOIN orders o ON u.id = o.user_id;
+SELECT * FROM a LEFT JOIN b ON a.id = b.a_id ORDER BY a.id DESC LIMIT 10;
+ALTER TABLE users ADD COLUMN phone VARCHAR(15);
+CREATE INDEX idx_email ON users(email);
+SELECT DISTINCT city FROM users WHERE name LIKE 'A%';
+SELECT AVG(salary), MAX(salary), MIN(salary), SUM(salary) FROM staff;
+DROP TABLE IF EXISTS temp; BEGIN; COMMIT; ROLLBACK;
+SELECT * FROM t WHERE id IN (SELECT id FROM s WHERE x BETWEEN 1 AND 9);
+FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+@@C, C++ and Java|Pointers, semicolons, templates and braces. Interview style syntax that every CS student must know by heart.|c|300|0.88
+#include <stdio.h>
+#include <iostream>
+int main() { printf("Hello\n"); return 0; }
+int *ptr = &x; *ptr = 10;
+for (int i = 0; i < n; i++) { sum += arr[i]; }
+struct Node { int data; struct Node *next; };
+Node* head = (Node*)malloc(sizeof(Node));
+free(ptr); ptr = NULL;
+std::vector<int> v = {1, 2, 3}; std::cout << v[0] << std::endl;
+public static void main(String[] args) { System.out.println("Hi"); }
+class Dog extends Animal implements Runnable { }
+template <typename T> T maxVal(T a, T b) { return a > b ? a : b; }
+while (head != NULL) { head = head->next; }
+#define MAX 100
+if (a == b && c != d || !e) { break; }
+int arr[5] = {1, 2, 3, 4, 5};
+public class Main { private int id; public int getId() { return id; } }
+try { run(); } catch (Exception e) { e.printStackTrace(); }
+unordered_map<string, int> freq; freq[word]++;
+@@OS: Processes and Threads|Type to learn. Read each sentence, understand it, then type it. By the end you will remember these OS basics.|p|250|0.92
+An operating system is system software that manages hardware resources and provides services to application programs. The kernel is the core of the operating system and runs in privileged kernel mode, while user programs run in user mode. A program becomes a process when it is loaded into memory and given a process control block, which stores its state, program counter, registers, and open files.
+A process moves through states such as new, ready, running, waiting, and terminated. A context switch saves the state of the running process and loads the state of another, which costs time but gives the illusion of parallelism. A thread is a lightweight unit of execution inside a process; threads share the code, data, and heap, but each thread has its own stack and registers.
+System calls are the controlled doorway from user mode into the kernel, for example fork, exec, read, write, and exit. The fork call creates a child process as a copy of the parent, and exec replaces the process image with a new program. A zombie process has finished but still has an entry in the process table until its parent calls wait, and an orphan process is one whose parent has exited.
+Inter-process communication lets processes exchange data using pipes, message queues, shared memory, and sockets. Shared memory is the fastest method because no copy through the kernel is needed, but it requires synchronization. A race condition occurs when the result depends on the order of execution, and a critical section is the code that must run by only one thread at a time.
+Q>What do threads share, and what is private to each thread?|They share code, data and heap; each has its own stack and registers.
+Q>What does fork() do?|Creates a child process as a copy of the parent.
+Q>What is a zombie process?|A finished process still in the process table until the parent calls wait().
+Q>Fastest IPC method?|Shared memory (but it needs synchronization).
+Q>What is a race condition?|The result depends on the order in which threads or processes run.
+@@OS: Scheduling, Deadlock, Memory|The most asked OS interview topics. Type slowly and clean, then repeat for speed.|p|250|0.92
+CPU scheduling decides which ready process runs next. First Come First Served is simple but suffers from the convoy effect. Shortest Job First minimizes average waiting time but can starve long jobs. Round Robin gives each process a fixed time quantum, which makes it fair and suitable for time sharing systems, and priority scheduling uses aging to prevent starvation.
+Synchronization tools include mutexes, semaphores, and monitors. A semaphore is an integer variable accessed only through wait and signal operations, and a binary semaphore behaves like a lock. The classic problems are the producer consumer, readers writers, and dining philosophers, and they teach how to avoid race conditions without causing deadlock.
+A deadlock happens when processes wait for each other forever. It needs four conditions together: mutual exclusion, hold and wait, no preemption, and circular wait. We can prevent it by breaking one condition, avoid it with the Banker's algorithm, detect it using a resource allocation graph, or simply ignore it like most general purpose systems do.
+Virtual memory lets a process use more memory than is physically installed by keeping only needed pages in RAM. The memory management unit translates virtual addresses to physical addresses using page tables, and the translation lookaside buffer caches recent translations. A page fault occurs when a page is not in RAM, and replacement algorithms like FIFO, LRU, and Optimal choose which page to evict. Thrashing happens when the system spends more time swapping pages than executing.
+Q>Four necessary conditions for deadlock?|Mutual exclusion, hold and wait, no preemption, circular wait.
+Q>Which scheduler uses a time quantum?|Round Robin.
+Q>What caches virtual to physical address translations?|The TLB (translation lookaside buffer).
+Q>What is thrashing?|The system spends more time swapping pages than executing.
+Q>Which algorithm is used for deadlock avoidance?|The Banker's algorithm.
+@@Computer Networks|Layers, protocols, ports and HTTP. Core knowledge for every backend and full stack developer.|p|250|0.92
+The OSI model has seven layers: physical, data link, network, transport, session, presentation, and application. The TCP/IP model simplifies this into four layers. Each layer adds its own header to the data as it moves down, which is called encapsulation, and the receiver removes the headers in reverse order.
+IP addresses identify hosts on a network, and IPv4 uses 32 bits while IPv6 uses 128 bits. Routers forward packets between networks using routing tables, and the subnet mask separates the network part from the host part. DNS translates human readable domain names like example.com into IP addresses, and DHCP assigns addresses automatically.
+TCP is a reliable, connection oriented protocol that uses a three way handshake of SYN, SYN-ACK, and ACK, along with sequence numbers, acknowledgements, and congestion control. UDP is connectionless and faster but offers no delivery guarantee, so it is used for streaming, gaming, and DNS queries. Ports identify the application, for example HTTP uses 80, HTTPS uses 443, SSH uses 22, and DNS uses 53.
+HTTP is a stateless request response protocol where the client sends a method such as GET, POST, PUT, or DELETE and the server replies with a status code like 200, 301, 404, or 500. HTTPS adds TLS encryption using certificates and public key cryptography to protect data in transit. Cookies, sessions, and tokens such as JWT are used to remember users across requests.
+Q>OSI layers in order?|Physical, Data link, Network, Transport, Session, Presentation, Application.
+Q>TCP three way handshake?|SYN, SYN-ACK, ACK.
+Q>Default ports of HTTP, HTTPS, SSH, DNS?|80, 443, 22, 53.
+Q>IPv4 vs IPv6 address size?|32 bits vs 128 bits.
+@@DBMS and Databases|Keys, normalization, ACID and indexes. Interview favourites that you will now type and remember.|p|250|0.92
+A database management system stores data and provides safe, fast access to it. The relational model organizes data into tables with rows and columns, and a primary key uniquely identifies every row. A foreign key links one table to another and enforces referential integrity.
+Normalization reduces redundancy and update anomalies. First normal form removes repeating groups, second normal form removes partial dependencies, and third normal form removes transitive dependencies. Sometimes databases are denormalized on purpose to make reads faster.
+A transaction is a group of operations that must follow the ACID properties: atomicity means all or nothing, consistency means valid state to valid state, isolation means transactions do not interfere, and durability means committed data survives crashes. Locks and isolation levels prevent problems such as dirty reads, non repeatable reads, and phantom reads.
+An index, usually a B plus tree, speeds up searches from linear time to logarithmic time but slows down writes and uses extra space. NoSQL databases such as MongoDB, Redis, and Cassandra trade strict structure for scalability, and the CAP theorem says a distributed system cannot guarantee consistency, availability, and partition tolerance all at once.
+Q>What does ACID stand for?|Atomicity, Consistency, Isolation, Durability.
+Q>What does third normal form remove?|Transitive dependencies.
+Q>Which structure do most indexes use?|A B+ tree, giving O(log n) search.
+Q>What does the CAP theorem say?|A distributed system cannot guarantee Consistency, Availability and Partition tolerance all together.
+@@DSA and Complexity|Big O, core data structures and classic algorithms. Faster typing and a sharper interview brain at the same time.|p|250|0.92
+An algorithm is a finite sequence of steps that solves a problem, and Big O notation describes how its running time or memory grows with the input size. Constant time is O(1), binary search is O(log n), a single loop is O(n), good sorting algorithms such as merge sort and quick sort run in O(n log n), and nested loops give O(n squared).
+An array gives constant time access by index but slow insertion in the middle, while a linked list allows fast insertion but needs linear time to reach an element. A stack follows last in first out and is used for function calls and undo, and a queue follows first in first out and is used for scheduling and breadth first search.
+A hash table maps keys to buckets using a hash function and gives average constant time lookup, but collisions must be handled with chaining or open addressing. A binary search tree keeps smaller values on the left and larger values on the right, and balanced versions like AVL and red black trees guarantee logarithmic height. A heap is a complete binary tree used to build priority queues.
+Graphs are traversed using breadth first search with a queue or depth first search with a stack or recursion. Dijkstra's algorithm finds the shortest path with non negative weights, and dynamic programming solves overlapping subproblems by storing results, which turns exponential recursion into polynomial time. Greedy algorithms make the best local choice, and backtracking explores all possibilities and undoes bad choices.
+Q>Complexity of binary search?|O(log n).
+Q>Stack vs queue?|Stack is LIFO, queue is FIFO.
+Q>Which data structure does BFS use?|A queue.
+Q>What does dynamic programming store?|Results of overlapping subproblems.
+@@OOP and Clean Code|Pillars, SOLID, patterns and engineering habits. Type like an engineer who writes clean code.|p|250|0.92
+Object oriented programming organizes software into objects that combine data and behavior. The four pillars are encapsulation, abstraction, inheritance, and polymorphism. Encapsulation hides internal state behind methods, abstraction exposes only what is necessary, inheritance lets a class reuse another class, and polymorphism lets the same call behave differently depending on the object.
+The SOLID principles guide clean design: single responsibility, open closed, Liskov substitution, interface segregation, and dependency inversion. Prefer composition over inheritance, keep functions small, and follow DRY, which means do not repeat yourself, and KISS, which means keep it simple.
+Design patterns are reusable solutions to common problems. The singleton ensures a single instance, the factory creates objects without exposing the construction logic, the observer notifies many listeners when state changes, and the strategy swaps algorithms at runtime. MVC separates the model, the view, and the controller.
+Good engineers write tests, use version control, review code, and measure performance before optimizing. Premature optimization is the root of all evil, so first make it work, then make it right, then make it fast. Debugging is about forming a hypothesis, reproducing the bug, and changing one thing at a time.
+Q>Four pillars of OOP?|Encapsulation, abstraction, inheritance, polymorphism.
+Q>What do the SOLID letters stand for?|Single responsibility, Open/closed, Liskov substitution, Interface segregation, Dependency inversion.
+Q>Purpose of the observer pattern?|Notify many listeners when state changes.
+Q>What does DRY mean?|Do not repeat yourself.
+@@Speed Drill: Mixed Code|Real world lines from every language, back to back. Switch mindset quickly and keep the rhythm.|c|380|0.95
+const x = arr.length > 0 ? arr[0] : null;
+for (let i = 0; i < n; i++) sum += a[i];
+if (!user) return res.status(404).json({ error: 'Not found' });
+app.get('/api/users/:id', async (req, res) => { res.json(await db.find(req.params.id)); });
+def fib(n): return n if n < 2 else fib(n - 1) + fib(n - 2)
+SELECT id, name FROM users WHERE active = 1 ORDER BY name LIMIT 5;
+git commit -am "fix: handle null pointer in parser"
+<div class="card"><h2 id="title">Hello</h2></div>
+.nav > li:not(:last-child) { margin-right: 12px; }
+int main(int argc, char **argv) { return argc > 1 ? atoi(argv[1]) : 0; }
+const debounce = (fn, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
+while (lo <= hi) { const mid = (lo + hi) >> 1; if (a[mid] < x) lo = mid + 1; else hi = mid - 1; }
+export const useStore = create((set) => ({ count: 0, inc: () => set((s) => ({ count: s.count + 1 })) }));
+try { await save(data); } catch (err) { logger.error(err.message); }
+docker run -it --rm -v $(pwd):/app -p 3000:3000 node:20 bash
+class Stack { constructor() { this.items = []; } push(x) { this.items.push(x); } pop() { return this.items.pop(); } }
+for key, value in config.items(): print(f"{key} = {value}")
+chmod 755 deploy.sh && ./deploy.sh --env=prod
+if (typeof window !== 'undefined' && window.localStorage) { init(); }
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+@media (min-width: 1024px) { .sidebar { display: block; width: 280px; } }
+UPDATE accounts SET balance = balance - 500 WHERE id = 7 AND balance >= 500;
+@@Symbol and Number Storm|The nastiest lines: regex, paths, URLs, shell, bit tricks. If you survive this, normal code will feel easy.|c|320|0.88
+!@#$%^&*()_+ {}|:"<>? ~`-=[]\;',./
+a[i] = b[j] * (c[k] + d[l]) - e[m] / f[n] % g[o];
+x = (y > 0) ? y : -y; z = !(a && b) || (c ^ d);
+$ cat /var/log/*.log | grep -E "^(ERR|WARN)" | sort -u > out.txt
+^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$
+{{ items | filter: "a" }} {% if x %} <%= y %> ${z} #{w}
+192.168.0.1:8080/api/v2/users?id=42&sort=desc#top
+0x1F4A & 0xFF | 0b1010 << 3 >> 1 ^ 0o17
+map[string][]int{"a": {1, 2}, "b": {3}}
+std::map<std::string, std::vector<int>> m; m["k"].push_back(42);
+/* TODO: fix @ 3:45 PM -- cost = $99.99 (50% off) */
+if (a[0] === '#' && b[1] !== '@' || c.length >= 8) { run(); }
+C:\Users\dev\Documents\project_v2.0\src\main.js
+price = qty * 1.18 + (shipping ?? 0) - discount;
+@Override public boolean equals(Object o) { return this == o; }
+#!/bin/bash set -euo pipefail; echo "Done: ${#arr[@]} items"
+@@Stamina: Computer Science Marathon|Longer text to build endurance. Stay relaxed, keep your breathing steady, do not rush at the start.|p|600|1
+A compiler translates source code into machine code in phases: lexical analysis, parsing, semantic analysis, optimization, and code generation. An interpreter executes code line by line, and JavaScript engines like V8 use just in time compilation to get the best of both. Memory in a program is split into the stack for function calls and local variables, and the heap for dynamically allocated objects; a memory leak happens when heap memory is never released.
+Version control with Git stores snapshots of a project as commits connected in a graph. A branch is just a movable pointer to a commit, merging combines histories, and rebasing replays commits on top of another base. Continuous integration runs tests automatically on every push, and continuous deployment ships passing builds to production.
+Security begins with hashing passwords using a slow salted algorithm such as bcrypt, never storing them in plain text. Common attacks include SQL injection, cross site scripting, and cross site request forgery, and they are prevented with parameterized queries, output escaping, and anti forgery tokens. Symmetric encryption like AES uses one shared key, while asymmetric encryption like RSA uses a public and private key pair.
+Modern web applications run in the browser using the event loop. JavaScript is single threaded, so long tasks block the page, and asynchronous callbacks, promises, and async await keep the interface responsive. The call stack runs synchronous code, the microtask queue runs promise callbacks first, and then the task queue runs timers and events.
+Q>Where do local variables live?|On the stack.
+Q>What is a memory leak?|Heap memory that is never released.
+Q>How do you prevent SQL injection?|Parameterized queries.
+Q>Which runs first, microtasks or timers?|Microtasks (promise callbacks).
+@@FINAL EXAM: 90 WPM|Code and theory mixed. Hit your target with 95 percent accuracy and you are a typing master. Stay calm and smooth.|p|900|1
+In JavaScript, const user = { name: 'Dev', id: 42 }; creates an object, and user.name returns the string. When the browser runs your script, the call stack executes functions one by one, and an async function such as await fetch('/api/data') hands control back to the event loop until the network replies.
+In Linux, ps aux | grep node lists processes, and kill -9 1234 sends SIGKILL, which the kernel delivers without letting the process clean up. Each process has a PID, its own virtual address space, and a page table; when you call fork(), the child gets a copy-on-write view of the parent's memory.
+A SQL query like SELECT * FROM orders WHERE total > 500 ORDER BY id DESC LIMIT 10; is parsed, optimized, and executed by the database engine. With an index on total, the engine uses a B+ tree lookup in O(log n) instead of scanning every row, and a transaction wraps writes so that COMMIT makes them durable while ROLLBACK undoes them.
+On the network, a request to https://example.com:443/api?id=7 first resolves DNS, opens a TCP connection with SYN, SYN-ACK, ACK, negotiates TLS, and then sends GET /api HTTP/1.1. The server returns 200 OK with JSON like {"ok": true, "items": [1, 2, 3]}, and your code reads it with res.json().
+Q>What does kill -9 send?|SIGKILL.
+Q>Why is an indexed lookup fast?|A B+ tree gives O(log n) search.
+Q>What does COMMIT do?|Makes the transaction changes durable.
+</script>
+
+<script>
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const KEY='typemaster90_v1',INT=[1,2,4,8,16,32,64];
+const dk=(d=new Date())=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const addDays=n=>{const d=new Date();d.setDate(d.getDate()+n);return dk(d)};
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const app=$('#app');
+
+/* ---------- storage ---------- */
+let S=load();
+function load(){let j=null;try{j=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+  if(!j||typeof j!=='object')j={};
+  j.ch=j.ch||{};j.hist=j.hist||[];j.keys=j.keys||{};j.conf=j.conf||{};
+  j.set=Object.assign({kb:true,unlock:false,base:30},j.set||{});j.startKey=j.startKey||dk();return j}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+
+/* ---------- chapters ---------- */
+const CH=[];
+(function(){let c=null;
+  document.getElementById('data').textContent.split('\n').forEach(l=>{l=l.replace(/\r/g,'').trim();if(!l)return;
+    if(l.startsWith('@@')){const p=l.slice(2).split('|');c={id:CH.length+1,title:p[0],tip:p[1],kind:p[2],len:+p[3],f:+p[4]||1,items:[],qa:[]};CH.push(c)}
+    else if(!c)return;else if(l.startsWith('Q>'))c.qa.push(l.slice(2).split('|'));else c.items.push(l)});
+  CH.forEach(c=>{c.need=c.kind==='p'?4:3;c.day=Math.ceil(c.id/2)});
+})();
+const WK={id:0,day:0,title:'Weak Keys Drill',tip:'',kind:'d',f:1,qa:[],need:0};
+const tgt=c=>c.id?Math.max(15,Math.round((S.set.base+(c.id-1)*(90-S.set.base)/29)*c.f)):90;
+const getRec=id=>S.ch[id]||{passes:0,best:0,bestAcc:0,runs:0,cur:0,box:-1,due:''};
+const isDone=c=>getRec(c.id).passes>=c.need;
+const unlocked=c=>S.set.unlock||c.id===1||isDone(CH[c.id-2]);
+const dueList=()=>CH.filter(c=>{const r=getRec(c.id);return r.box>=0&&r.due&&r.due<=dk()}).sort((a,b)=>getRec(a.id).due<getRec(b.id).due?-1:1);
+const dayNum=()=>Math.max(1,Math.round((new Date(dk()+'T00:00:00')-new Date(S.startKey+'T00:00:00'))/864e5)+1);
+const minsToday=()=>S.hist.filter(h=>dk(new Date(h.t))===dk()).reduce((a,h)=>a+h.dur,0)/60;
+function streak(){const days=new Set(S.hist.map(h=>dk(new Date(h.t))));let n=0;const d=new Date();if(!days.has(dk(d)))d.setDate(d.getDate()-1);while(days.has(dk(d))){n++;d.setDate(d.getDate()-1)}return n}
+
+/* ---------- keyboard model ---------- */
+const SH={'~':'`','!':'1','@':'2','#':'3','$':'4','%':'5','^':'6','&':'7','*':'8','(':'9',')':'0','_':'-','+':'=','{':'[','}':']','|':'\\',':':';','"':"'",'<':',','>':'.','?':'/'};
+const FING=['`1qaz','2wsx','3edc','4rfv5tgb','6yhn7ujm','8ik,','9ol.',"0p;/-=[]'\\"];
+const FG={};FING.forEach((s,i)=>[...s].forEach(ch=>FG[ch]=i));Object.assign(FG,{space:8,tab:0,caps:0,shiftL:0,shiftR:7,enter:7,back:7});
+const ROWS=[['`','1','2','3','4','5','6','7','8','9','0','-','=','back'],['tab','q','w','e','r','t','y','u','i','o','p','[',']','\\'],['caps','a','s','d','f','g','h','j','k','l',';',"'",'enter'],['shiftL','z','x','c','v','b','n','m',',','.','/','shiftR'],['space']];
+const WIDE={back:2,tab:1.5,'\\':1.5,caps:1.8,enter:2.2,shiftL:2.4,shiftR:2.8,space:7};
+const LBL={back:'\u232B',tab:'Tab',caps:'Caps',enter:'Enter',shiftL:'Shift',shiftR:'Shift',space:''};
+function baseOf(ch){if(ch==='\n')return{k:'enter'};if(ch===' ')return{k:'space'};if(SH[ch])return{k:SH[ch],shift:true};if(/[A-Z]/.test(ch))return{k:ch.toLowerCase(),shift:true};return{k:ch}}
+function kbHTML(){return ROWS.map(r=>'<div class="kr">'+r.map(k=>`<div class="key f${FG[k]!=null?FG[k]:8}" data-k="${esc(k)}" style="flex:${WIDE[k]||1}">${esc(LBL[k]!=null?LBL[k]:k)}</div>`).join('')+'</div>').join('')}
+function kbMap(root){const m={};$$('.key',root).forEach(e=>m[e.dataset.k]=e);return m}
+const nm=k=>k===' '?'Space':k==='\n'?'Enter':k;
+function grp(c){if(c===' ')return'Space';if(c==='\n')return'Enter';if(/[a-z]/.test(c))return'Letters (a-z)';if(/[A-Z]/.test(c))return'Capitals (A-Z)';if(/[0-9]/.test(c))return'Digits';if('()[]{}<>'.includes(c))return'Brackets ()[]{}<>';if('+-*/%=!&|^~'.includes(c))return'Operators';return'Punctuation & symbols'}
+
+/* ---------- text generation ---------- */
+function genChapter(c,startIdx){
+  if(c.kind==='p'){const r=getRec(c.id),n=c.items.length;let i=startIdx!=null?startIdx:(r.cur||0),t=[],l=0,u=0;
+    while(l<c.len&&u<n){const s=c.items[(i+u)%n];t.push(s);l+=s.length+1;u++}return{text:t.join(' '),used:u}}
+  const join=c.kind==='c'?'\n':' ';let pool=shuf(c.items),t=[],l=0,i=0;
+  while(l<c.len){if(i>=pool.length){pool=shuf(c.items);i=0}const s=pool[i++];t.push(s);l+=s.length+1}
+  return{text:t.join(join),used:0}}
+let WORDS=null;
+function wordBank(){if(WORDS)return WORDS;const s=new Set();CH.forEach(c=>c.items.forEach(l=>l.split(/\s+/).forEach(w=>{if(w.length>=2&&w.length<=18)s.add(w)})));return WORDS=[...s]}
+function weakKeys(){return Object.entries(S.keys).filter(([k,v])=>v.n>=8&&k!==' '&&k!=='\n').map(([k,v])=>{const er=v.e/v.n,avg=v.c?v.ms/v.c:300;return{k,n:v.n,er,avg,score:er*200+Math.max(0,avg-220)/12}}).sort((a,b)=>b.score-a.score)}
+function genWeak(){const wk=weakKeys().slice(0,6).map(x=>x.k);if(!wk.length)return null;
+  let bank=wordBank().filter(w=>wk.some(k=>w.includes(k)));
+  if(bank.length<6){const L='asdfjkl';bank=[];for(let i=0;i<40;i++){const k=wk[i%wk.length];bank.push(L[i%7]+k+L[(i*3)%7]+k)}}
+  let t=[],l=0,p=shuf(bank),i=0;while(l<280){if(i>=p.length){p=shuf(bank);i=0}t.push(p[i]);l+=p[i].length+1;i++}
+  return{text:t.join(' '),used:0}}
+function pickFree(){const u=CH.filter(unlocked);return u[Math.floor(Math.random()*u.length)]}
+function genFree(){const c=pickFree();return{c,g:genChapter(c,c.kind==='p'?Math.floor(Math.random()*c.items.length):null)}}
+
+/* ---------- navigation ---------- */
+let view='home',R=null,modalOpen=false,tmr=null;
+function go(v){view=v;stopTimer();R=null;closeModal();render()}
+function render(){
+  $$('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===view||(view==='type'&&b.dataset.v==='chapters')));
+  ({home:renderHome,chapters:renderChapters,analysis:renderAnalysis,settings:renderSettings,type:renderType})[view]();
+  window.scrollTo(0,0)}
+function closeModal(){modalOpen=false;$('#modal').classList.add('hidden');$('#modal').innerHTML=''}
+function stopTimer(){if(tmr){clearInterval(tmr);tmr=null}}
+
+/* ---------- charts ---------- */
+function chart(cv,data,o={}){if(!cv)return;const dpr=window.devicePixelRatio||1,w=cv.clientWidth||500,h=cv.clientHeight||150;cv.width=w*dpr;cv.height=h*dpr;
+  const x=cv.getContext('2d');x.setTransform(dpr,0,0,dpr,0,0);const mn=o.min!=null?o.min:0,lines=o.lines||[];
+  const mx=o.max!=null?o.max:Math.max(10,...data,...lines.map(l=>l.y))*1.1;const L=34,Rr=8,T=8,B=16;
+  const X=i=>L+(data.length<2?(w-L-Rr)/2:i*(w-L-Rr)/(data.length-1)),Y=v=>T+(h-T-B)*(1-(Math.min(Math.max(v,mn),mx)-mn)/(mx-mn));
+  x.font='10px sans-serif';x.lineWidth=1;
+  for(let i=0;i<=4;i++){const v=mn+(mx-mn)*i/4,y=Y(v);x.strokeStyle='#27325a';x.beginPath();x.moveTo(L,y);x.lineTo(w-Rr,y);x.stroke();x.fillStyle='#8c97c4';x.fillText(Math.round(v),2,y+3)}
+  lines.forEach(l=>{x.strokeStyle=l.c;x.setLineDash([5,4]);x.beginPath();x.moveTo(L,Y(l.y));x.lineTo(w-Rr,Y(l.y));x.stroke();x.setLineDash([]);x.fillStyle=l.c;x.fillText(l.t,L+4,Y(l.y)-3)});
+  if(!data.length){x.fillStyle='#8c97c4';x.font='13px sans-serif';x.fillText('Abhi koi data nahi - pehla run karo',L+10,h/2);return}
+  const col=o.color||'#6ee7b7';x.strokeStyle=col;x.lineWidth=2;x.beginPath();data.forEach((v,i)=>{i?x.lineTo(X(i),Y(v)):x.moveTo(X(i),Y(v))});x.stroke();
+  x.fillStyle=col;if(data.length<=60)data.forEach((v,i)=>{x.beginPath();x.arc(X(i),Y(v),2.6,0,7);x.fill()})}
+
+/* ---------- HOME ---------- */
+const TIPS=['Screen dekh, keyboard nahi. Pehle kuch din slow lagega, phir speed automatically explode karegi.','Accuracy pehle, speed baad me. 95% ke neeche speed badhane ki koshish mat kar.','Rhythm maintain kar. Har key ke beech same gap rakh, jerky typing se score girta hai.','Har 25 minute baad 5 minute break. Wrists ko float kar, desk pe rest mat kar.','Galti pe ruk ke soch mat, backspace daba aur aage badh. Flow nahi todna.','Aankhein 2 se 3 words aage rakh. 90+ WPM ka yehi secret hai.','Symbols ( { [ ; = pe extra time laga. Coding speed inhi se decide hoti hai.','Raat ko jo practice karega, neend me brain use pakka karta hai. Sone se pehle 10 min kar.'];
+function renderHome(){
+  const dn=CH.filter(isDone).length,cur=CH.find(c=>!isDone(c)),due=dueList(),mt=minsToday(),dy=dayNum(),exp=Math.min(30,dy*2),best=S.hist.reduce((m,h)=>Math.max(m,h.wpm),0),last5=S.hist.slice(-5);
+  const avg5=last5.length?last5.reduce((a,h)=>a+h.wpm,0)/last5.length:0,wk=weakKeys().slice(0,6);
+  const pace=dn>=30?'\uD83C\uDFC6 Saare 30 chapters complete! Ab review karte reh aur Final Exam ko 90+ pe maar.':dn>=exp?'\u2705 On track - schedule ke hisaab se chal raha hai.':'\u26A0\uFE0F '+(exp-dn)+' chapter(s) peeche. Aaj extra time laga.';
+  app.innerHTML=`
+  <div class="card"><div class="row"><div><span class="badge ok">Day ${Math.min(dy,15)} of 15${dy>15?'+':''}</span><h2>Target: 90 WPM, 95% accuracy</h2><p class="mut">${pace}</p></div>
+  <div style="text-align:right"><div class="stat"><div class="v">${best?best.toFixed(0):'--'}</div><div class="l">Best WPM</div></div></div></div>
+  <div class="sp"></div><div class="bar"><i style="width:${dn/30*100}%"></i></div><p class="mut" style="margin-top:6px;font-size:13px">${dn}/30 chapters done &middot; last 5 runs avg ${avg5?avg5.toFixed(0):'--'} WPM &middot; streak ${streak()} day(s)</p></div>
+  <div class="sp"></div><div class="sp"></div>
+  <div class="grid g4">
+    <div class="card"><b>\u25B6 Continue</b><p class="mut" style="font-size:13px;margin:6px 0 10px">${cur?'Ch '+cur.id+': '+esc(cur.title):'All done!'}</p><button class="btn pri" ${cur?'':'disabled'} onclick="startCh(${cur?cur.id:1})">Start</button></div>
+    <div class="card"><b>\uD83D\uDD01 Daily Review</b><p class="mut" style="font-size:13px;margin:6px 0 10px">${due.length?due.length+' chapter(s) due - bhoolne se pehle revise':'Kuch due nahi'}</p><button class="btn pri" ${due.length?'':'disabled'} onclick="startReview()">Review</button></div>
+    <div class="card"><b>\uD83C\uDFAF Weak Keys Drill</b><p class="mut" style="font-size:13px;margin:6px 0 10px">${wk.length?wk.map(w=>'<span class="chip">'+esc(nm(w.k))+'</span>').join(''):'Pehle kuch runs kar'}</p><button class="btn pri" ${wk.length?'':'disabled'} onclick="startWeak()">Fix them</button></div>
+    <div class="card"><b>\uD83C\uDFB2 Random Mix</b><p class="mut" style="font-size:13px;margin:6px 0 10px">Unlocked chapters ka random drill. Infinite practice.</p><button class="btn pri" onclick="startFree()">Go</button></div>
+  </div>
+  <div class="sp"></div><div class="sp"></div>
+  <div class="grid g2">
+    <div class="card"><b>\uD83D\uDCC5 Daily 90 minute routine</b><ul class="rt mut"><li>5 min: Daily Review (warm-up)</li><li>40 min: aaj ke 2 chapters (passes complete kar)</li><li>20 min: Weak Keys Drill</li><li>25 min: Random Mix ya purane chapters speed pe</li></ul>
+    <div class="sp"></div><div class="bar"><i style="width:${Math.min(100,mt/90*100)}%"></i></div><p class="mut" style="font-size:13px;margin-top:6px">Aaj: ${mt.toFixed(0)} / 90 min</p></div>
+    <div class="card"><b>\uD83D\uDCC8 Recent WPM</b><canvas id="hc"></canvas></div>
+  </div>
+  <div class="sp"></div><div class="card"><b>\uD83D\uDCA1 Tip of the day</b><p class="mut" style="margin-top:4px">${TIPS[dy%TIPS.length]}</p></div>`;
+  chart($('#hc'),S.hist.slice(-30).map(h=>h.wpm),{lines:[{y:90,c:'#fbbf24',t:'90 goal'}]})}
+
+/* ---------- CHAPTERS ---------- */
+function chCard(c){const r=getRec(c.id),ok=unlocked(c),d=isDone(c),due=r.box>=0&&r.due&&r.due<=dk();
+  const kinds={d:'drill',c:'code',p:'CS paragraphs'};
+  return `<div class="card chap ${ok?'':'lock'} ${d?'done':''}" ${ok?`onclick="startCh(${c.id})"`:''}><div class="row"><span class="badge">Ch ${c.id}</span><span>${d?'\u2705':ok?'\u25B6':'\uD83D\uDD12'}${due?' <span class="badge warn">review due</span>':''}</span></div>
+  <h3>${esc(c.title)}</h3><p>${esc(c.tip)}</p><div class="sp"></div>
+  <div class="row" style="align-items:center"><span>${Array.from({length:c.need},(_,i)=>`<i class="dot ${i<r.passes?'on':''}"></i>`).join('')}</span><span class="mut" style="font-size:12px">${kinds[c.kind]} &middot; target ${tgt(c)} WPM &middot; best ${r.best?r.best.toFixed(0):'--'}</span></div></div>`}
+function renderChapters(){let h='<h2>30 Chapters &middot; 15 Days</h2><p class="mut">Har chapter me target WPM aur 95% accuracy ke saath utne passes chahiye jitne dots hain. Phir agla chapter unlock hota hai.</p>';
+  for(let d=1;d<=15;d++){const cs=CH.filter(c=>c.day===d),dn=cs.every(isDone);h+=`<div class="day"><div class="dh"><b>Day ${d}</b> ${dn?'<span class="badge ok">complete</span>':d===dayNum()?'<span class="badge warn">today</span>':''}</div><div class="grid g2">${cs.map(chCard).join('')}</div></div>`}
+  app.innerHTML=h}
+
+/* ---------- RUN START ---------- */
+function startCh(id){const c=CH[id-1];if(!unlocked(c))return;begin(c,'ch',genChapter(c))}
+function startReview(){const d=dueList();if(!d.length)return;begin(d[0],'rev',genChapter(d[0]))}
+function startWeak(){const g=genWeak();if(!g){alert('Pehle thode chapters kar, phir weak keys ka data banega.');return}begin(WK,'weak',g)}
+function startFree(){const f=genFree();begin(f.c,'free',f.g)}
+function begin(c,mode,g){stopTimer();closeModal();
+  const goal=mode==='ch'?tgt(c):mode==='rev'?Math.round(tgt(c)*.9):90;
+  R={c,mode,text:g.text,used:g.used||0,pos:0,st:null,last:0,strokes:0,wrong:0,okc:0,st8:new Array(g.text.length).fill(0),kd:{},cf:{},cT:[],done:false,goal,fin:0};
+  view='type';render()}
+function again(nw){const m=R.mode,c=R.c;let g;
+  if(nw){if(m==='ch'||m==='rev'){if(!R.done&&c.kind==='p'){const r=S.ch[c.id]||(S.ch[c.id]=getRec(c.id));r.cur=(r.cur||0)+R.used}g=genChapter(c)}
+    else if(m==='weak')g=genWeak()||{text:R.text,used:0};
+    else{const f=genFree();begin(f.c,'free',f.g);return}}
+  else g={text:R.text,used:R.used};
+  begin(c,m,g)}
+
+/* ---------- TYPING VIEW ---------- */
+function renderType(){const c=R.c,m=R.mode;
+  const lab=m==='ch'?'Day '+c.day+' &middot; Chapter '+c.id:m==='rev'?'Review &middot; Chapter '+c.id:m==='weak'?'Weak Keys Drill':'Random Mix &middot; Ch '+c.id;
+  app.innerHTML=`<div class="row"><div><span class="badge">${lab}</span><h2>${m==='weak'?'Weak keys fix':esc(c.title)}</h2><p class="mut">${m==='weak'?'Teri sabse kamzor keys ke words. Slow aur clean type kar.':esc(c.tip)}</p></div><button class="btn" onclick="go('chapters')">\u2715 Exit</button></div>
+  <div class="sp"></div><div class="grid g4"><div class="card stat"><div class="v" id="lw">0</div><div class="l">WPM</div></div><div class="card stat"><div class="v" id="la">100%</div><div class="l">Accuracy</div></div><div class="card stat"><div class="v" id="lt">0:00</div><div class="l">Time</div></div><div class="card stat"><div class="v">${R.goal}</div><div class="l">${m==='ch'||m==='rev'?'Target WPM':'Goal WPM'}</div></div></div>
+  <div class="sp"></div><div class="bar"><i id="prog"></i></div><div class="sp"></div>
+  <div class="typebox" id="tb"></div><div class="warnbox" id="caps"></div>
+  ${S.set.kb?'<div class="kb" id="kb">'+kbHTML()+'</div>':''}
+  <p class="mut" style="text-align:center;font-size:13px">Timer pehli key se start. <b>Esc</b> = same text restart &middot; <b>Tab</b> = new text &middot; Backspace allowed</p>`;
+  const tb=$('#tb');let h='';for(const ch of R.text)h+=ch==='\n'?'<span class="ch nl">\u21B5</span><br>':'<span class="ch">'+esc(ch)+'</span>';
+  tb.innerHTML=h;R.sp=$$('.ch',tb);R.km=S.set.kb?kbMap($('#kb')):{};paint(0);hlNext()}
+function paint(i){const s=R.sp[i];if(!s)return;let c='ch';if(R.text[i]==='\n')c+=' nl';if(R.st8[i]===1)c+=' ok';else if(R.st8[i]===2)c+=' bad';if(i===R.pos)c+=' cur';s.className=c}
+function hlNext(){Object.values(R.km).forEach(e=>e.classList.remove('next'));const ch=R.text[R.pos];if(ch==null)return;const b=baseOf(ch),e=R.km[b.k];if(e)e.classList.add('next');
+  if(b.shift){const left=FG[b.k]!=null&&FG[b.k]<=3;const s=R.km[left?'shiftR':'shiftL'];if(s)s.classList.add('next')}}
+function fmt(s){s=Math.floor(s);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
+function updLive(){if(!R||!R.st)return;const el=(performance.now()-R.st)/1000;
+  $('#lw').textContent=el>1?Math.round(R.okc/5/(el/60)):0;$('#la').textContent=(R.strokes?Math.round((R.strokes-R.wrong)/R.strokes*100):100)+'%';$('#lt').textContent=fmt(el)}
+
+function onKey(e){
+  if(modalOpen){if(e.key==='Enter'&&R&&Date.now()-R.fin>700){e.preventDefault();const b=$('#mp');if(b)b.click()}return}
+  if(view!=='type'||!R)return;if(e.ctrlKey||e.metaKey||e.altKey)return;
+  const k=e.key;
+  if(k==='Escape'){e.preventDefault();again(false);return}
+  if(k==='Tab'){e.preventDefault();again(true);return}
+  if(R.done)return;
+  const cp=$('#caps');if(cp)cp.textContent=e.getModifierState&&e.getModifierState('CapsLock')?'\u26A0 CAPS LOCK ON':'';
+  if(k==='Backspace'){e.preventDefault();if(R.pos>0){const o=R.pos;R.pos--;if(R.st8[R.pos]===1)R.okc--;R.st8[R.pos]=0;paint(o);paint(R.pos);hlNext()}return}
+  let ch;if(k==='Enter')ch='\n';else if(k.length===1)ch=k;else return;
+  e.preventDefault();
+  const now=performance.now();if(!R.st){R.st=now;R.last=now;tmr=setInterval(updLive,200)}
+  const exp=R.text[R.pos],ok=ch===exp,kd=R.kd[exp]||(R.kd[exp]={n:0,e:0,ms:0,c:0});kd.n++;
+  if(ok){const d=now-R.last;if(R.pos>0&&d<2500){kd.ms+=d;kd.c++}R.st8[R.pos]=1;R.okc++;R.cT.push(now-R.st)}
+  else{kd.e++;R.wrong++;R.st8[R.pos]=2;const cf=exp+'\u2192'+ch;R.cf[cf]=(R.cf[cf]||0)+1;const eb=R.km[baseOf(ch).k];if(eb){eb.classList.add('err');setTimeout(()=>eb.classList.remove('err'),160)}}
+  R.last=now;R.strokes++;const o=R.pos;R.pos++;paint(o);paint(R.pos);
+  $('#prog').style.width=R.pos/R.text.length*100+'%';
+  const cs=R.sp[R.pos];if(cs){const tb=$('#tb');tb.scrollTop=Math.max(0,cs.offsetTop-tb.clientHeight/2)}
+  hlNext();
+  if(R.pos>=R.text.length)finish(now)}
+window.addEventListener('keydown',onKey);
+
+/* ---------- FINISH ---------- */
+function finish(now){stopTimer();R.done=true;R.fin=Date.now();
+  const dur=Math.max(.5,(now-R.st)/1000),okc=R.st8.filter(x=>x===1).length,wpm=okc/5/(dur/60),raw=R.text.length/5/(dur/60),acc=R.strokes?(R.strokes-R.wrong)/R.strokes*100:100,c=R.c;
+  const b=[];R.cT.forEach(t=>{const s=Math.floor(t/1000);b[s]=(b[s]||0)+1});const arr=[];for(let i=0;i<Math.floor(dur);i++)arr.push((b[i]||0)*12);
+  let cons=100;if(arr.length>=3){const m=arr.reduce((a,x)=>a+x,0)/arr.length;if(m>0){const sd=Math.sqrt(arr.reduce((a,x)=>a+(x-m)**2,0)/arr.length);cons=Math.max(0,Math.round(100-sd/m*100))}else cons=0}
+  for(const k in R.kd){const a=R.kd[k],t=S.keys[k]||(S.keys[k]={n:0,e:0,ms:0,c:0});t.n+=a.n;t.e+=a.e;t.ms+=a.ms;t.c+=a.c}
+  for(const k in R.cf)S.conf[k]=(S.conf[k]||0)+R.cf[k];
+  let pass=null,justDone=false;
+  if(R.mode==='ch'){pass=wpm>=R.goal&&acc>=95;const r=S.ch[c.id]||(S.ch[c.id]=getRec(c.id));r.runs++;r.best=Math.max(r.best,wpm);r.bestAcc=Math.max(r.bestAcc,acc);
+    if(pass){r.passes++;if(r.passes===c.need){justDone=true;r.box=0;r.due=addDays(1)}}if(c.kind==='p')r.cur=(r.cur||0)+R.used}
+  else if(R.mode==='rev'){pass=wpm>=R.goal&&acc>=94;const r=S.ch[c.id];r.runs++;if(pass){r.box=Math.min(r.box+1,6);r.due=addDays(INT[r.box])}else{r.box=0;r.due=addDays(1)}if(c.kind==='p')r.cur=(r.cur||0)+R.used}
+  S.hist.push({t:Date.now(),c:c.id,m:R.mode,wpm:+wpm.toFixed(1),acc:+acc.toFixed(1),raw:+raw.toFixed(1),cons,dur:+dur.toFixed(1),n:R.text.length,p:pass});
+  if(S.hist.length>3000)S.hist.shift();save();
+  showResult({wpm,raw,acc,cons,dur,pass,justDone,arr})}
+function showResult(r){const c=R.c,m=R.mode;
+  const slow=Object.entries(R.kd).filter(([k,v])=>v.c>=2&&k!==' ').map(([k,v])=>[k,v.ms/v.c]).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  const errs=Object.entries(R.kd).filter(([k,v])=>v.e>0).sort((a,b)=>b[1].e-a[1].e).slice(0,6);
+  const nextC=m==='ch'&&isDone(c)&&CH[c.id]&&unlocked(CH[c.id])?CH[c.id]:null;
+  let head;
+  if(m==='ch'){const rec=getRec(c.id);head=r.pass?`<div class="pass y">\u2705 Passed (${Math.min(rec.passes,c.need)}/${c.need})${r.justDone?' - Chapter complete! \uD83C\uDF89':''}</div>`:`<div class="pass n">Abhi nahi - ${r.wpm<R.goal?'speed '+Math.ceil(R.goal)+' chahiye':''}${r.wpm<R.goal&&r.acc<95?' aur ':''}${r.acc<95?'accuracy 95% chahiye':''}</div>`}
+  else if(m==='rev')head=r.pass?'<div class="pass y">\u2705 Review pass - next review door shift hua</div>':'<div class="pass n">Review fail - kal phir aayega</div>';
+  else head='<div class="pass y">Practice run saved</div>';
+  const qa=(m==='ch'||m==='rev')&&c.qa.length?`<div class="sp"></div><b>\uD83E\uDDE0 Recall check (click to reveal)</b>`+c.qa.map(q=>`<div class="qa" onclick="this.classList.toggle('open')">${esc(q[0])}<div class="a">${esc(q[1])}</div></div>`).join(''):'';
+  $('#modal').innerHTML=`<div class="mbox">${head}<p class="mut" style="margin-bottom:10px">${m==='ch'||m==='rev'?'Target: '+R.goal+' WPM &amp; '+(m==='ch'?95:94)+'% accuracy':'Goal: 90 WPM'}</p>
+  <div class="grid g4"><div class="card stat"><div class="v">${r.wpm.toFixed(0)}</div><div class="l">Net WPM</div></div><div class="card stat"><div class="v">${r.acc.toFixed(1)}%</div><div class="l">Accuracy</div></div><div class="card stat"><div class="v">${r.raw.toFixed(0)}</div><div class="l">Raw WPM</div></div><div class="card stat"><div class="v">${r.cons}%</div><div class="l">Consistency</div></div><div class="card stat"><div class="v">${fmt(r.dur)}</div><div class="l">Time</div></div><div class="card stat"><div class="v">${R.wrong}</div><div class="l">Mistakes</div></div></div>
+  <div class="sp"></div>${r.arr.length>=3?'<b>Speed over time</b><canvas id="rc" style="height:110px"></canvas>':''}
+  <div class="sp"></div><div class="grid g2"><div><b>\uD83D\uDC22 Slowest keys</b><div>${slow.length?slow.map(s=>`<span class="chip">${esc(nm(s[0]))} ${Math.round(s[1])}ms</span>`).join(''):'<span class="mut">-</span>'}</div></div><div><b>\u274C Error keys</b><div>${errs.length?errs.map(s=>`<span class="chip">${esc(nm(s[0]))} x${s[1].e}</span>`).join(''):'<span class="mut">Perfect!</span>'}</div></div></div>
+  ${qa}<div class="sp"></div><div class="row" style="justify-content:flex-start">
+  <button class="btn pri" id="mp" onclick="again(true)">New text \u23CE</button><button class="btn" onclick="again(false)">Retry same</button>${nextC?`<button class="btn" onclick="startCh(${nextC.id})">Next chapter \u25B6</button>`:''}<button class="btn" onclick="go('chapters')">Chapters</button><button class="btn" onclick="go('analysis')">Analysis</button></div></div>`;
+  $('#modal').classList.remove('hidden');modalOpen=true;
+  if(r.arr.length>=3)chart($('#rc'),r.arr,{lines:[{y:R.goal,c:'#fbbf24',t:'target'}]})}
+
+/* ---------- ANALYSIS ---------- */
+let hm='acc';
+function agg(){const a={};for(const c in S.keys){const v=S.keys[c],k=baseOf(c).k;if(!k)continue;const t=a[k]||(a[k]={n:0,e:0,ms:0,c:0});t.n+=v.n;t.e+=v.e;t.ms+=v.ms;t.c+=v.c}return a}
+function setHm(m){hm=m;renderAnalysis()}
+function renderAnalysis(){const H=S.hist,last=H.slice(-10),av=(a,f)=>a.length?a.reduce((s,x)=>s+f(x),0)/a.length:0;
+  const best=H.reduce((m,h)=>Math.max(m,h.wpm),0),totT=H.reduce((a,h)=>a+h.dur,0)/60,ks=Object.values(S.keys).reduce((a,v)=>a+v.n,0);
+  const f5=H.slice(0,5),l5=H.slice(-5);let trend='Kam se kam 6 runs chahiye trend ke liye.';
+  if(H.length>=6){const d=av(l5,h=>h.wpm)-av(f5,h=>h.wpm);trend=(d>=0?'+':'')+d.toFixed(1)+' WPM improvement (pehle 5 runs vs last 5 runs). '+(av(l5,h=>h.wpm)>=90?'Target hit!':'Target se '+(90-av(l5,h=>h.wpm)).toFixed(0)+' WPM door.')}
+  const days={};H.forEach(h=>{const d=dk(new Date(h.t));(days[d]=days[d]||[]).push(h)});
+  const rows=Object.keys(days).sort().reverse().slice(0,15).map(d=>{const a=days[d];return `<tr><td>${d}</td><td>${a.length}</td><td>${(a.reduce((s,h)=>s+h.dur,0)/60).toFixed(0)} min</td><td>${av(a,h=>h.wpm).toFixed(0)}</td><td>${Math.max(...a.map(h=>h.wpm)).toFixed(0)}</td><td>${av(a,h=>h.acc).toFixed(1)}%</td></tr>`}).join('');
+  const G={};for(const c in S.keys){const g=grp(c),v=S.keys[c],t=G[g]||(G[g]={n:0,e:0,ms:0,c:0});t.n+=v.n;t.e+=v.e;t.ms+=v.ms;t.c+=v.c}
+  const grows=Object.entries(G).sort((a,b)=>b[1].e/b[1].n-a[1].e/a[1].n).map(([g,v])=>`<tr><td>${esc(g)}</td><td>${v.n}</td><td>${(100-v.e/v.n*100).toFixed(1)}%</td><td>${v.c?Math.round(v.ms/v.c):'-'} ms</td></tr>`).join('');
+  const wk=weakKeys().slice(0,10).map(w=>`<tr><td><span class="chip">${esc(nm(w.k))}</span></td><td>${w.n}</td><td>${(100-w.er*100).toFixed(1)}%</td><td>${Math.round(w.avg)} ms</td></tr>`).join('');
+  const conf=Object.entries(S.conf).sort((a,b)=>b[1]-a[1]).slice(0,10).map(([k,v])=>{const [e,t]=k.split('\u2192');return `<tr><td><span class="chip">${esc(nm(e))}</span> typed as <span class="chip">${esc(nm(t))}</span></td><td>${v}</td></tr>`}).join('');
+  const prog=CH.map(c=>{const r=getRec(c.id);return `<tr><td>${c.id}</td><td>${esc(c.title)}</td><td>${tgt(c)}</td><td>${r.best?r.best.toFixed(0):'-'}</td><td>${r.bestAcc?r.bestAcc.toFixed(1)+'%':'-'}</td><td>${r.runs}</td><td>${isDone(c)?'\u2705':r.passes+'/'+c.need}</td><td>${r.box>=0?r.due:'-'}</td></tr>`}).join('');
+  app.innerHTML=`<h2>Analysis</h2><p class="mut">${trend}</p><div class="sp"></div>
+  <div class="grid g4"><div class="card stat"><div class="v">${best?best.toFixed(0):'--'}</div><div class="l">Best WPM</div></div><div class="card stat"><div class="v">${last.length?av(last,h=>h.wpm).toFixed(0):'--'}</div><div class="l">Avg WPM (last 10)</div></div><div class="card stat"><div class="v">${last.length?av(last,h=>h.acc).toFixed(1)+'%':'--'}</div><div class="l">Avg accuracy</div></div><div class="card stat"><div class="v">${totT.toFixed(0)}m</div><div class="l">Total practice</div></div><div class="card stat"><div class="v">${ks}</div><div class="l">Keystrokes</div></div><div class="card stat"><div class="v">${streak()}</div><div class="l">Day streak</div></div></div>
+  <div class="sp"></div><div class="grid g2"><div class="card"><b>WPM per run</b><canvas id="c1"></canvas></div><div class="card"><b>Accuracy per run</b><canvas id="c2"></canvas></div></div>
+  <div class="sp"></div><div class="card"><div class="row"><b>\u2328 Keyboard heatmap</b><span><button class="btn" onclick="setHm('acc')" ${hm==='acc'?'style="border-color:var(--acc)"':''}>Accuracy</button> <button class="btn" onclick="setHm('spd')" ${hm==='spd'?'style="border-color:var(--acc)"':''}>Speed</button></span></div><p class="mut" style="font-size:13px">Green = achha, red = weak, grey = data kam. Hover karke numbers dekh.</p><div class="kb" id="hk">${kbHTML()}</div></div>
+  <div class="sp"></div><div class="grid g2"><div class="card"><b>\uD83C\uDFAF Weakest keys</b><table><tr><th>Key</th><th>Count</th><th>Accuracy</th><th>Avg speed</th></tr>${wk||'<tr><td colspan=4 class="mut">No data yet</td></tr>'}</table></div>
+  <div class="card"><b>\uD83D\uDCCA Key groups</b><table><tr><th>Group</th><th>Count</th><th>Accuracy</th><th>Speed</th></tr>${grows||'<tr><td colspan=4 class="mut">No data yet</td></tr>'}</table></div></div>
+  <div class="sp"></div><div class="grid g2"><div class="card"><b>\uD83D\uDE35 Top mistakes</b><table>${conf||'<tr><td class="mut">No data yet</td></tr>'}</table></div>
+  <div class="card"><b>\uD83D\uDDD3 Daily log</b><table><tr><th>Date</th><th>Runs</th><th>Time</th><th>Avg</th><th>Best</th><th>Acc</th></tr>${rows||'<tr><td colspan=6 class="mut">No data yet</td></tr>'}</table></div></div>
+  <div class="sp"></div><div class="card"><b>\uD83D\uDCDA Chapter progress and next review date</b><div style="overflow:auto"><table><tr><th>#</th><th>Chapter</th><th>Target</th><th>Best</th><th>Acc</th><th>Runs</th><th>Passes</th><th>Next review</th></tr>${prog}</table></div></div>`;
+  const rr=H.slice(-60);chart($('#c1'),rr.map(h=>h.wpm),{lines:[{y:90,c:'#fbbf24',t:'90 goal'}]});chart($('#c2'),rr.map(h=>h.acc),{min:80,max:100,color:'#60a5fa',lines:[{y:95,c:'#fbbf24',t:'95 min'}]});
+  const ag=agg(),km=kbMap($('#hk'));for(const k in km){const a=ag[k];if(!a||a.n<3)continue;let h;
+    if(hm==='acc'){const acc=100-a.e/a.n*100;h=Math.max(0,Math.min(130,(acc-85)/15*130))}else{const ms=a.c?a.ms/a.c:300;h=Math.max(0,Math.min(130,130*(1-(ms-150)/350)))}
+    km[k].style.background=`hsl(${h} 65% 36%)`;km[k].style.color='#fff';km[k].title=nm(k)+': '+(100-a.e/a.n*100).toFixed(1)+'% acc, '+(a.c?Math.round(a.ms/a.c):'-')+' ms ('+a.n+' keys)'}}
+
+/* ---------- SETTINGS ---------- */
+function renderSettings(){app.innerHTML=`<h2>Settings</h2><div class="sp"></div><div class="grid g2">
+  <div class="card"><b>Mera abhi ka speed (WPM)</b><p class="mut" style="font-size:13px;margin:4px 0 8px">Chapter targets is hisaab se set hote hain: Ch 1 se shuru, Ch 30 pe hamesha 90 WPM.</p><input type="number" min="10" max="80" value="${S.set.base}" onchange="S.set.base=Math.max(10,Math.min(80,+this.value||30));save();render()"></div>
+  <div class="card"><b>Options</b><p style="margin:8px 0"><label><input type="checkbox" ${S.set.kb?'checked':''} onchange="S.set.kb=this.checked;save()"> On-screen keyboard guide (finger colors)</label></p><p><label><input type="checkbox" ${S.set.unlock?'checked':''} onchange="S.set.unlock=this.checked;save()"> Saare chapters unlock karo</label></p></div>
+  <div class="card"><b>Backup</b><p class="mut" style="font-size:13px;margin:4px 0 8px">Progress browser me save hoti hai. Backup lete reh taaki kabhi na jaye.</p><button class="btn" onclick="expData()">Export JSON</button> <label class="btn" style="display:inline-block">Import<input type="file" accept=".json" hidden onchange="impData(this)"></label></div>
+  <div class="card"><b>Reset everything</b><p class="mut" style="font-size:13px;margin:4px 0 8px">Saari progress delete ho jayegi.</p><button class="btn" onclick="resetAll()">Reset</button></div></div>`}
+function expData(){const b=new Blob([JSON.stringify(S)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='typemaster90-backup-'+dk()+'.json';a.click()}
+function impData(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const j=JSON.parse(r.result);if(!j.ch||!j.hist)throw 0;localStorage.setItem(KEY,JSON.stringify(j));S=load();alert('Import ho gaya!');go('home')}catch(e){alert('Invalid backup file')}};r.readAsText(f)}
+function resetAll(){if(confirm('Sach me saari progress delete karni hai?')){try{localStorage.removeItem(KEY)}catch(e){}S=load();go('home')}}
+
+save();go('home');
+if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})})}
+</script>
+</body>
+</html>
